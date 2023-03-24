@@ -5,7 +5,7 @@ Hello, world. I develop a fast-typing game.
 ### Demo
 
 
-Click [here](https://asifahmedbhuiyan./) to test the application 
+Click [here](https://asifahmedbhuiyan.github.io/word-game/) to test the application 
 
 <br/>
 
