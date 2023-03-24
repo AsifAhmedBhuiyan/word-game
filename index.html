@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+ <html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8 ">
+      <meta name="viewport" content="width=device-width,initial-scale1">
+      <meta name="author"content="Asif">
+      <meta name="description" content="Word game">
+      <meta name="keywords" content="html, css, web, web development,seo">
+      <title>Word game</title>
+      <link rel="stylesheet" href="./assets/style/index.css" media="all">
+      <script src="./assets/script/index.js" defer></script>
+   </head>
+    <body>
+      <div class="container">
+        <h1>Word Game</h1>
+        <p>Enter as many words as possible before the time runs out!</p>
+        <div class="game">
+          <div class="timer">
+            Time Remaining: <span id="time">99</span> seconds
+          </div>
+          <div class="score">
+            Score: <span id="score">0</span>
+          </div>
+          <div class="word">
+            <span id="word"></span>
+            <input type="text" id="input">
+          </div>
+          <button id="start">Start</button>
+        </div>
+      </div>
+    </body>
+</html>
