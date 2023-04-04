@@ -14,6 +14,7 @@ h1 {
 
 body {
   background: linear-gradient(120deg, #ff7eb3, #b100ff);
+  overflow: hidden;
 }
 
 p {

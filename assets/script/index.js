@@ -15,7 +15,7 @@ const words = ['dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building',
 'famous', 'league', 'memory', 'leather', 'planet', 'software', 'update', 'yellow',
 'keyboard', 'window'];
 
-let time = 99;
+let time = 5;
 let score = 0;
 let currentWord = '';
 
@@ -29,7 +29,7 @@ const audioElement = new Audio('./assets/audio/background-music.mp3');
 let intervalId = null;
 
 function startGame() {
-  time = 99;
+  time = 5;
   score = 0;
   currentWord = '';
 
@@ -52,6 +52,14 @@ function endGame() {
   audioElement.pause();
   audioElement.currentTime = 0;
 
+  const hits = score;
+  const percentage = Math.round((score / words.length) * 100);
+  const date = new Date().toLocaleDateString();
+
+  const scoreObject = new Score(date, hits, percentage);
+  saveScoreToLocal(scoreObject);
+
+  
 }
 
 function updateScore() {
@@ -124,63 +132,69 @@ class Score {
     this.#percentage = percentage;
   }
 }
-  
-function saveScoreToLocal(scoreObject) {
-  let scores = [];
-  const existingScores = localStorage.getItem('scores');
 
-  if (existingScores !== null) {
-    const scoreStrings = existingScores.split(',');
-    scores = scoreStrings.map(scoreString => {
-      const scoreParts = scoreString.split(',');
-      const date = scoreParts[0];
-      const hits = parseInt(scoreParts[1]);
-      const percentage = parseInt(scoreParts[2]);
-      return new Score(date, hits, percentage);
-    });
-  }
+// initialize the scores array
+let scores = [];
 
-  scores.push(scoreObject);
-  const scoreStrings = scores.map(score => `${score.date},${score.hits},${score.percentage}`);
-  const scoresString = scoreStrings.join(',');
-  localStorage.setItem('scores', scoresString);
+// Retrieve scores from localStorage, if any
+const scoresJSON = localStorage.getItem('scores');
+if (scoresJSON !== null) {
+  scores = JSON.parse(scoresJSON);
 }
 
+// Function to update the scores array with a new score
+function updateScores(hits, percentage) {
+  // Add a new Player object to the scores array
+  scores.push(new Score(hits, percentage));
+
+  // Sort the scores array by hits, descending order
+  scores.sort((a, b) => b.hits - a.hits);
+
+  // Only keep the top 9 scores
+  scores.splice(9);
+
+  // Save the updated scores array to localStorage
+  localStorage.setItem('scores', JSON.stringify(scores));
+}
+
+// Example usage to update scores after a game
+updateScores();
+
+// Function to display the scores in a table
 function displayScores() {
-  const existingScores = localStorage.getItem('scores');
+  const table = document.createElement('table');
 
-  if (existingScores !== null) {
-    const scoreStrings = existingScores.split(',');
-    const scores = scoreStrings.map(scoreString => {
-      const scoreParts = scoreString.split(',');
-      const date = scoreParts[0];
-      const hits = parseInt(scoreParts[1]);
-      const percentage = parseInt(scoreParts[2]);
-      return new Score(date, hits, percentage);
-    });
+  // Add header row
+  const headerRow = document.createElement('tr');
+  const headerHits = document.createElement('th');
+  headerHits.textContent = 'Hits';
+  const headerPercentage = document.createElement('th');
+  headerPercentage.textContent = 'Percentage';
+  headerRow.appendChild(headerHits);
+  headerRow.appendChild(headerPercentage);
+  table.appendChild(headerRow);
 
-    scores.sort((a, b) => b.date.localeCompare(a.date));
-
-    scores.forEach(score => {
-      const row = document.createElement('tr');
-
-      const dateCell = document.createElement('td');
-      dateCell.textContent = score.date;
-      row.appendChild(dateCell);
-
-      const hitsCell = document.createElement('td');
-      hitsCell.textContent = score.hits;
-      row.appendChild(hitsCell);
-
-      const percentageCell = document.createElement('td');
-      percentageCell.textContent = score.percentage + '%';
-      row.appendChild(percentageCell);
-    });
+  // Add rows for each score
+  for (const score of scores) {
+    const row = document.createElement('tr');
+    const hits = document.createElement('td');
+    hits.textContent = score.hits;
+    const percentage = document.createElement('td');
+    percentage.textContent = score.percentage;
+    row.appendChild(hits);
+    row.appendChild(percentage);
+    table.appendChild(row);
   }
+
+  // Add the table to the page
+  const container = document.getElementById('scoreboard');
+  container.innerHTML = '';
+  container.appendChild(table);
 }
 
+// Example usage to display scores
+displayScores();
 
 
 
-
-  
+ 
