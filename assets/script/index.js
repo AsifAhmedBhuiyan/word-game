@@ -15,7 +15,7 @@ const words = ['dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building',
 'famous', 'league', 'memory', 'leather', 'planet', 'software', 'update', 'yellow',
 'keyboard', 'window'];
 
-let time = 90;
+let time = 5;
 let score = 0;
 let currentWord = '';
 
@@ -29,7 +29,7 @@ const audioElement = new Audio('./assets/audio/background-music.mp3');
 let intervalId = null;
 
 function startGame() {
-  time = 90;
+  time = 5;
   score = 0;
   currentWord = '';
 
